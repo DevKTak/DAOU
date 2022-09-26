@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="daou.department.DepartmentMapper">
+    <select id="findDepartment" resultType="map">
+        SELECT department_id
+             , parent_id
+             , name
+             , sort
+        FROM Department;
+    </select>
+
+    <insert id="save" parameterType="daou.department.dto.DepartmentDTO">
+        INSERT INTO Department(department_id, parent_id, name, sort)
+             VALUES (#{departmentId}, #{parentId}, #{name}, #{sort})
+    </insert>
+</mapper>

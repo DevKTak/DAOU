@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="daou.member.MemberMapper">
+    <select id="findMemberAndPosition" resultType="map">
+        SELECT M.member_id
+             , M.department_id
+             , concat(M.name, ' ', P.name) name
+             , M.profile_image
+             , P.level
+          FROM Member M
+    INNER JOIN Position P ON M.position_id = P.position_id
+         WHERE M.del_yn = 'N'
+      ORDER BY P.level
+    </select>
+</mapper>
