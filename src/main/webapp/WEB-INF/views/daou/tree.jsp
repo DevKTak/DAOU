@@ -110,7 +110,7 @@
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.departmentCreate.obj: ', self.pageId, obj);
 
-                                            self.departmentPopup(nodeData, 'C', );
+                                            self.departmentCreateForm(nodeData);
                                         }
                                     },
                                     departmentUpdate: {
@@ -120,7 +120,7 @@
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.departmentUpdate.obj: ', self.pageId, obj);
 
-                                            self.departmentPopup(nodeData, 'U');
+                                            self.departmentUpdateForm(nodeData);
                                         }
                                     },
                                     departmentDelete: {
@@ -178,17 +178,15 @@
             });
         },
 
-        departmentPopup: function (nodeData, kind) {
-            const self = this;
-
-            let $body = $('body');
+        departmentCreateForm: function (nodeData) {
+            const $body = $('body');
 
             $.ajax({
                 type: 'GET',
                 dataType: 'html',
-                data: 'deptId=' + encodeURIComponent(nodeData.id) + '&deptName='
-                    + encodeURIComponent(nodeData.text) + '&parentId=' + encodeURIComponent(nodeData.parent),
-                url: '${pageContext.request.contextPath}/department/popup',
+                data: 'departmentId=' + encodeURIComponent(nodeData.id)
+                    + '&deptName=' + encodeURIComponent(nodeData.text),
+                url: '${pageContext.request.contextPath}/department/createForm',
                 beforeSend: function () {
                     w2utils.lock($body, {spinner: true, msg: '화면 로딩중...', opacity: 0.5});
                 },
@@ -197,15 +195,49 @@
                 },
                 success: function (result) {
                     const buttons = [
-                        '<button class="w2ui-btn w2ui-icon-check" onclick="departmentPopup.save()">&nbsp;&nbsp;Save</button>',
+                        '<button class="w2ui-btn w2ui-icon-check" onclick="departmentCreate.createDepartment()">&nbsp;&nbsp;Save</button>',
                         '<button class="w2ui-btn w2ui-icon-cross" onclick="w2popup.close();">&nbsp;&nbsp;Close</button>'
                     ];
 
                     w2popup.open({
-                        title: kind === 'C' ? '부서 생성' : '부서 수정',
+                        title: '부서 생성',
                         body: result,
                         width: 500,
                         height: 400,
+                        modal: true,
+                        showClose: false,
+                        buttons: buttons.join('')
+                    });
+                }
+            });
+        },
+
+        departmentUpdateForm: function (nodeData) {
+            const $body = $('body');
+
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                data: 'departmentId=' + encodeURIComponent(nodeData.id)
+                    + '&deptName=' + encodeURIComponent(nodeData.text),
+                url: '${pageContext.request.contextPath}/department/updateForm',
+                beforeSend: function () {
+                    w2utils.lock($body, {spinner: true, msg: '화면 로딩중...', opacity: 0.5});
+                },
+                complete: function () {
+                    w2utils.unlock($body);
+                },
+                success: function (result) {
+                    const buttons = [
+                        '<button class="w2ui-btn w2ui-icon-check" onclick="departmentUpdate.updateDepartment()">&nbsp;&nbsp;Save</button>',
+                        '<button class="w2ui-btn w2ui-icon-cross" onclick="w2popup.close();">&nbsp;&nbsp;Close</button>'
+                    ];
+
+                    w2popup.open({
+                        title: '부서 수정',
+                        body: result,
+                        width: 300,
+                        height: 144,
                         modal: true,
                         showClose: false,
                         buttons: buttons.join('')

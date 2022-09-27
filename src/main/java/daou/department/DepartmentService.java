@@ -2,31 +2,24 @@ package daou.department;
 
 import daou.department.dto.DepartmentDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class DepartmentService {
 
-    private final DepartmentMapper mapper;
+    private final DepartmentMapper departmentMapper;
+    private final ModelMapper modelMapper;
 
-    public int save(DepartmentDTO departmentDTO) {
-        String parseLocalDateTimeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public int departmentCreate(DepartmentDTO departmentDTO) {
+        Department department = modelMapper.map(departmentDTO, Department.class);
+        department.generateDepartmentId();
 
-        Department department = Department.builder()
-                        .departmentId(parseLocalDateTimeNow)
-                                .parentId(departmentDTO.getParentId())
-                                        .name(departmentDTO.getName())
-                                                .sort(departmentDTO.getSort())
-                                                        .build();
+        return departmentMapper.departmentCreate(department);
+    }
 
-        log.debug(departmentDTO.toString());
-
-        return mapper.save(department);
+    public int departmentUpdate(DepartmentDTO departmentDTO) {
+        return departmentMapper.departmentUpdate(departmentDTO);
     }
 }

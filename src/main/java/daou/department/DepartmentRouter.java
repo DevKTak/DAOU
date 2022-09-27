@@ -10,12 +10,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/department")
 public class DepartmentRouter {
 
-    @GetMapping("/popup")
-    public String departmentPopupForm(@RequestParam("deptId") String deptId,
+    @GetMapping("/createForm")
+    public String departmentCreateForm(@RequestParam("departmentId") String departmentId,
                                       @RequestParam("deptName") String deptName, Model model) {
-        model.addAttribute("deptId", deptId);
+        model.addAttribute("departmentId", departmentId);
         model.addAttribute("deptName", deptName);
 
-        return "daou/department/departmentPopup";
+        return "daou/department/departmentCreate";
+    }
+
+    @GetMapping("/updateForm")
+    public String departmentUpdateForm(@RequestParam("departmentId") String departmentId,
+                                      @RequestParam("deptName") String deptName, Model model) {
+        model.addAttribute("departmentId", departmentId);
+        model.addAttribute("deptName", deptName);
+
+        return "daou/department/departmentUpdate";
     }
 }

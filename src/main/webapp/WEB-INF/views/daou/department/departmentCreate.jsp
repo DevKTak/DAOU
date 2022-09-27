@@ -15,14 +15,14 @@
 <body>
 <div style="display: flex; width: 100%; height: 100%;">
     <div style="width: 50%; border: 3px #cfcfcf outset; overflow: auto; margin-top: 5px;">
-        <div id="daouTreePopup"></div>
+        <div id="daouTreeCreate"></div>
     </div>
     <div style="width: 50%; overflow: auto;">
         <div class="w2ui-group">
             <div class="w2ui-group-fields">
                 <div class="w2ui-field">
                     <label for="parentDeptName">상위 부서</label>
-                    <input type="text" id="parentDeptName" disabled>
+                    <input type="text" id="parentDeptName" value="${deptName}" disabled>
                 </div>
             </div>
             <div class="w2ui-group-fields">
@@ -36,11 +36,10 @@
 </div>
 
 <script>
-    var departmentPopup = {
+    var departmentCreate = {
 
-        pageId: 'departmentPopup',
+        pageId: 'departmentCreate',
 
-        parent: daouTree,
         parentId: '',
         sort: 0,
 
@@ -72,9 +71,9 @@
                     });
                     self.sort = maxSort + 1;
 
-                    const $daouTreePopup = $('#daouTreePopup');
+                    const $daouTreeCreate = $('#daouTreeCreate');
 
-                    $daouTreePopup.jstree({
+                    $daouTreeCreate.jstree({
                         core: {
                             multiple: false, // 다중 선택
                             check_callback: false,
@@ -93,10 +92,9 @@
                         },
                         plugins: ['types', 'sort']
                     }).on('loaded.jstree', function () {
-                        $daouTreePopup.jstree('open_all');
+                        $daouTreeCreate.jstree('open_all');
 
-                        $('#parentDeptName').val('${deptName}');
-                        self.parentId =  '${deptId}';
+                        self.parentId =  '${departmentId}';
                     }).on('changed.jstree', function (event, data) {
                         const node = data.node;
 
@@ -118,7 +116,7 @@
             });
         },
 
-        save: function () {
+        createDepartment: function () {
             const self = this;
 
             const param = {
@@ -134,7 +132,7 @@
                 data: JSON.stringify(param),
                 url: '${pageContext.request.contextPath}/api/department',
                 success: function (result) {
-                    console.log('[%s] save - result: ', self.pageId, result);
+                    console.log('[%s] createDepartment - result: ', self.pageId, result);
 
                     if (result > 0) {
                         w2alert('부서가 생성되었습니다.').ok(() => {
@@ -151,7 +149,7 @@
     };
 
     $(function () {
-        departmentPopup.initTree();
+        departmentCreate.initTree();
     });
 </script>
 </body>

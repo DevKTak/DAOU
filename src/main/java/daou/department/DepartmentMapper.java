@@ -1,5 +1,6 @@
 package daou.department;
 
+import daou.department.dto.DepartmentDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -10,5 +11,7 @@ public interface DepartmentMapper {
 
     List<Map<String, Object>> findDepartment();
 
-    int save(Department department);
+    int departmentCreate(Department department);
+
+    int departmentUpdate(DepartmentDTO departmentDTO);
 }

@@ -18,11 +18,12 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @PostMapping("/department")
-    public int save(@Valid @RequestBody DepartmentDTO departmentDTO) {
-        log.error(String.valueOf(departmentDTO));
-        log.debug(departmentDTO.getParentId());
-
-        return departmentService.save(departmentDTO);
+    public int departmentCreate(@Valid @RequestBody DepartmentDTO departmentDTO) {
+        return departmentService.departmentCreate(departmentDTO);
     }
 
+    @PutMapping("/department")
+    public int departmentUpdate(@Valid @RequestBody DepartmentDTO departmentDTO) {
+        return departmentService.departmentUpdate(departmentDTO);
+    }
 }

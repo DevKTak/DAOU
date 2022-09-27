@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberRouter {
 
-    @GetMapping("/popup")
-    public String memberPopupForm() {
-        return "daou/member/memberPopup";
+    @GetMapping("/createForm")
+    public String memberCreateForm() {
+        return "daou/member/memberCreate";
     }
 }

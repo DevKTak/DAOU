@@ -9,6 +9,8 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class DepartmentDTO {
 
+    private String departmentId;
+
     private String parentId;
 
     @NotBlank(message = "부서명을 입력해주세요.")

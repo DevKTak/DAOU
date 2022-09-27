@@ -10,8 +10,14 @@
         FROM Department;
     </select>
 
-    <insert id="save" parameterType="daou.department.dto.DepartmentDTO">
+    <insert id="departmentCreate" parameterType="daou.department.Department">
         INSERT INTO Department(department_id, parent_id, name, sort)
              VALUES (#{departmentId}, #{parentId}, #{name}, #{sort})
+    </insert>
+
+    <insert id="departmentUpdate" parameterType="daou.department.dto.DepartmentDTO">
+        UPDATE Department
+           SET name = #{name}
+         WHERE department_id = #{departmentId}
     </insert>
 </mapper>
