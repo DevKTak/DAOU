@@ -26,4 +26,9 @@ public class DepartmentController {
     public int departmentUpdate(@Valid @RequestBody DepartmentDTO departmentDTO) {
         return departmentService.departmentUpdate(departmentDTO);
     }
+
+    @DeleteMapping("/department/{departmentId}")
+    public int departmentDelete(@PathVariable String departmentId) {
+        return departmentService.departmentDelete(departmentId);
+    }
 }

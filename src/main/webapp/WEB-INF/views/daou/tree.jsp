@@ -127,8 +127,13 @@
                                         separator_before: false,
                                         separator_after: false,
                                         label: '부서 삭제',
+                                        _disabled: node.children.length > 0,
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.departmentDelete.obj: ', self.pageId, obj);
+
+                                            w2confirm('선택한 부서를 삭제하시겠습니까?', '부서 삭제').yes(() => {
+                                                self.deleteDepartment(nodeData);
+                                            });
                                         }
                                     },
                                     memberCreate: {
@@ -178,6 +183,7 @@
             });
         },
 
+        <%-- 부서 추가 팝업 --%>
         departmentCreateForm: function (nodeData) {
             const $body = $('body');
 
@@ -212,6 +218,7 @@
             });
         },
 
+        <%-- 부서 수정 팝업 --%>
         departmentUpdateForm: function (nodeData) {
             const $body = $('body');
 
@@ -242,6 +249,27 @@
                         showClose: false,
                         buttons: buttons.join('')
                     });
+                }
+            });
+        },
+
+        <%-- 부서 삭제 --%>
+        deleteDepartment: function (nodeData) {
+            $.ajax({
+                type: 'DELETE',
+                dataType: 'text',
+                contentType: 'application/json; charset=utf-8',
+                // data: JSON.stringify({departmentId: nodeData.id}),
+                url: '${pageContext.request.contextPath}/api/department/' + nodeData.id,
+                success: function (result) {
+                    console.log('[%s] deleteDepartment - result: ', this.pageId, result);
+
+                    if (result > 0) {
+                        w2alert('부서가 삭제되었습니다.', '부서 삭제').ok(() => {
+                            daouTree.initTree();
+                        });
+                    }
+
                 }
             });
         }

@@ -15,9 +15,14 @@
              VALUES (#{departmentId}, #{parentId}, #{name}, #{sort})
     </insert>
 
-    <insert id="departmentUpdate" parameterType="daou.department.dto.DepartmentDTO">
+    <update id="departmentUpdate" parameterType="daou.department.dto.DepartmentDTO">
         UPDATE Department
            SET name = #{name}
          WHERE department_id = #{departmentId}
-    </insert>
+    </update>
+
+    <delete id="departmentDelete" parameterType="String">
+        DELETE FROM Department
+        WHERE department_id = #{departmentId}
+    </delete>
 </mapper>

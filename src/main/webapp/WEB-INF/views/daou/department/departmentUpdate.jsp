@@ -30,6 +30,7 @@
 
         pageId: 'departmentUpdate',
 
+        <%-- 부서 수정 --%>
         updateDepartment: function () {
             const self = this;
 
@@ -48,7 +49,7 @@
                     console.log('[%s] updateDepartment - result: ', self.pageId, result);
 
                     if (result > 0) {
-                        w2alert('부서가 수정되었습니다.').ok(() => {
+                        w2alert('부서가 수정되었습니다.', '부서 수정').ok(() => {
                             const obj = {'key': daouTree};
                             const property = 'key';
 
