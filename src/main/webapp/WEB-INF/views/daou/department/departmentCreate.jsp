@@ -28,7 +28,7 @@
             <div class="w2ui-group-fields">
                 <div class="w2ui-field">
                     <label for="name">부서명</label>
-                    <input type="text" id="name">
+                    <input type="text" id="name" placeholder="부서명을 입력해주세요." required>
                 </div>
             </div>
         </div>
@@ -59,6 +59,7 @@
                     $.each(result?.department, (i, v) => {
                         department.push({
                             id: v.department_id,
+                            departmentId: v.department_id,
                             parent: v.department_id === '[DAOU]' ? '#' : v.parent_id,
                             text: v.name,
                             type: '',
@@ -90,24 +91,15 @@
                         sort: function(a, b) {
                             return this.get_node(a).original.sort > this.get_node(b).original.sort ? 1 : -1;
                         },
-                        plugins: ['types', 'sort']
+                        plugins: ['types', 'sort', 'unique']
                     }).on('loaded.jstree', function () {
                         $daouTreeCreate.jstree('open_all');
 
                         self.parentId =  '${departmentId}';
                     }).on('changed.jstree', function (event, data) {
                         const node = data.node;
-
                         $('#parentDeptName').val(node.text);
-                        self.parentId = node.id;
-
-                    }).on('move_node.jstree', function () {
-
-                    }).on('select_node', function (event, data) {
-                        console.log('event2: ', event);
-                        console.log('data2: ', data);
-                    }).on('refresh.jstree', function () {
-                        console.log('refresh.jstree');
+                        self.parentId = node.departmentId;
                     });
                 },
                 error: function (request, status, error) {

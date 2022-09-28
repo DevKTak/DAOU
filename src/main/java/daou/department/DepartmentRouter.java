@@ -12,7 +12,7 @@ public class DepartmentRouter {
 
     @GetMapping("/createForm")
     public String departmentCreateForm(@RequestParam("departmentId") String departmentId,
-                                      @RequestParam("deptName") String deptName, Model model) {
+                                       @RequestParam("deptName") String deptName, Model model) {
         model.addAttribute("departmentId", departmentId);
         model.addAttribute("deptName", deptName);
 
@@ -21,7 +21,7 @@ public class DepartmentRouter {
 
     @GetMapping("/updateForm")
     public String departmentUpdateForm(@RequestParam("departmentId") String departmentId,
-                                      @RequestParam("deptName") String deptName, Model model) {
+                                       @RequestParam("deptName") String deptName, Model model) {
         model.addAttribute("departmentId", departmentId);
         model.addAttribute("deptName", deptName);
 

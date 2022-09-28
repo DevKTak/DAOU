@@ -72,19 +72,18 @@
                             data: member,
                             check_callback: true, // 기본적인 컨텍스트메뉴 사용, true를 안해주면 드래그만 되고 이동은 안됨
                             check_callback: (operation, curNode, nextNode, nodePosition, more) => {
-                                if (operation === 'move_node' && more.ref === undefined) { // Drag & Drop 하는 시점
-                                    console.log(curNode);
-                                    console.log(nextNode);
+                                if (operation === 'move_node' && more.ref === undefined) { // Drop 하는 시점
+                                    const curData = curNode.original;
+                                    let nextData = nextNode.original;
+                                    const msg = confirm('[' + curData.text + '] -> [' + nextData.text + ']  이동 하시겠습니까?');
 
-                                    const msg = confirm('[' + curNode.original.text + '] -> [' + nextNode.original.text + ']  이동 하시겠습니까?');
-
-                                    if (curNode.original.type === '' && nextNode.original.type === '') { // 부서 -> 부서
+                                    if (curData.type === '' && nextData.type === '') { // 부서 -> 부서
                                         if (!msg) {
                                             return false;
                                         }
                                         const param = {
-                                            departmentId: curNode.original.departmentId,
-                                            parentId: nextNode.original.departmentId
+                                            departmentId: curData.departmentId,
+                                            parentId: nextData.departmentId
                                         };
 
                                         $.ajax({
@@ -97,14 +96,14 @@
                                                 console.log('[%s] check_callback 부서 -> 부서 - result: ', self.pageId, result);
                                             }
                                         });
-                                    } else if (curNode.original.type === 'leaf' && nextNode.original.type === '') { // 직원 -> 부서
+                                    } else if (curData.type === 'leaf' && nextData.type === '') { // 직원 -> 부서
                                         if (!msg) {
                                             return false;
                                         }
                                         const param = {
-                                            memberId: curNode.original.memberId,
-                                            departmentId: curNode.original.departmentId,
-                                            nextDepartmentId: nextNode.original.departmentId
+                                            memberId: curData.memberId,
+                                            departmentId: curData.departmentId,
+                                            nextDepartmentId: nextData.departmentId
                                         };
 
                                         $.ajax({
@@ -117,11 +116,11 @@
                                                 console.log('[%s] check_callback 직원 -> 부서 - result: ', self.pageId, result);
                                             }
                                         });
-                                    } else if (curNode.original.type === 'leaf' && nextNode.original.type === 'leaf') {
-                                        w2alert('[' + curNode.original.text + '] -> [' + nextNode.original.text + '] 이동할 수 없습니다.');
+                                    } else if (curData.type === 'leaf' && nextData.type === 'leaf') {
+                                        w2alert('[' + curData.text + '] -> [' + nextData.text + '] 이동할 수 없습니다.');
                                         return false;
                                     } else {
-                                        w2alert('[' + curNode.original.text + '] -> [' + nextNode.original.text + '] 이동할 수 없습니다.');
+                                        w2alert('[' + curData.text + '] -> [' + nextData.text + '] 이동할 수 없습니다.');
                                         return false;
                                     }
                                 }
@@ -166,7 +165,7 @@
                                     departmentCreate: {
                                         separator_before: false,
                                         separator_after: false,
-                                        label: '부서 생성',
+                                        label: '부서 추가',
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.departmentCreate.obj: ', self.pageId, obj);
 
@@ -191,7 +190,7 @@
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.departmentDelete.obj: ', self.pageId, obj);
 
-                                            w2confirm('선택한 부서를 삭제하시겠습니까?', '부서 삭제').yes(() => {
+                                            w2confirm('해당 부서를 삭제하시겠습니까?', '부서 삭제').yes(() => {
                                                 self.deleteDepartment(nodeData);
                                             });
                                         }
@@ -199,9 +198,11 @@
                                     memberCreate: {
                                         separator_before: false,
                                         separator_after: false,
-                                        label: '직원 생성',
+                                        label: '직원 추가',
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.memberCreate.obj: ', self.pageId, obj);
+
+                                            self.memberCreateForm(nodeData);
                                         }
                                     },
                                 };
@@ -221,7 +222,7 @@
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.memberDelete.obj: ', self.pageId, obj);
 
-                                            w2confirm('선택한 직원를 삭제하시겠습니까?', '부서 삭제').yes(() => {
+                                            w2confirm('해당 직원를 삭제하시겠습니까?', '부서 삭제').yes(() => {
                                                 self.deleteMember(nodeData);
                                             });
                                         }
@@ -231,27 +232,13 @@
                             return node.icon ? departmentContextMenu : memberContextMenu;
                           }
                         },
-                        plugins: ['contextmenu', 'types', 'dnd' ,/* 'wholerow',*/ 'sort']
+                        plugins: ['contextmenu', 'types', 'dnd' , 'sort', 'unique' /*, 'wholerow' */]
                     }).on('loaded.jstree', function () {
                         $daouTree.jstree('open_all');
                     }).on('changed.jstree', function (event, data) {
                         console.log('[%s] initTree - changed.jstree - data: ', self.pageId, data);
                     }).on('move_node.jstree', function (event, data) {
-                        // console.log('[%s] initTree - 드래그앤드랍 - data: ', self.pageId, data);
-                        // console.log('드래그앤드랍>>>>>>>>>>>', data.old_instance.move_node());
-                        // const curData = data.node.original;
-                        // const nextData = data.instance.get_node(data.parent).original;
-                        //
-                        // if (curData.type === 'leaf' && nextData.type === 'leaf') {
-                        //     alert('직원 to 직원2');
-                        //     return;
-                        // }
-                        //
-                        // if (data.node.icon) { // 부서 DragAndDrop
-                        //
-                        // } else { // 직원 DragAndDrop
-                        //
-                        // }
+
                     });
                 },
                 error: function (request, status, error) {
@@ -283,7 +270,7 @@
                     ];
 
                     w2popup.open({
-                        title: '부서 생성',
+                        title: '부서 추가',
                         body: result,
                         width: 500,
                         height: 400,
@@ -349,6 +336,46 @@
             });
         },
 
+        <%-- 직원 추가 팝업 --%>
+        memberCreateForm: function (nodeData) {
+            const $body = $('body');
+
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                data: 'departmentId=' + encodeURIComponent(nodeData.departmentId)
+                    + '&deptName=' + encodeURIComponent(nodeData.text),
+                url: '${pageContext.request.contextPath}/member/createForm',
+                beforeSend: function () {
+                    w2utils.lock($body, {spinner: true, msg: '화면 로딩중...', opacity: 0.5});
+                },
+                complete: function () {
+                    w2utils.unlock($body);
+                },
+                success: function (result) {
+                    const buttons = [
+                        '<button class="w2ui-btn w2ui-icon-check" onclick="memberCreate.createMember()">&nbsp;&nbsp;Save</button>',
+                        '<button class="w2ui-btn w2ui-icon-cross" onclick="w2popup.close();">&nbsp;&nbsp;Close</button>'
+                    ];
+
+                    w2popup.open({
+                        title: '직원 추가',
+                        body: result,
+                        width: 500,
+                        height: 400,
+                        modal: true,
+                        showClose: false,
+                        buttons: buttons.join('')
+                    });
+                }
+            });
+        },
+
+        <%-- 직원 수정 --%>
+        updateMemberForm: function (nodeData) {
+
+        },
+
         <%-- 직원 삭제 --%>
         deleteMember: function (nodeData) {
             $.ajax({
@@ -361,8 +388,7 @@
 
                     if (result > 0) {
                         w2alert('직원이 삭제되었습니다.', '직원 삭제').ok(() => {
-                            $
-                            // daouTree.initTree();
+                            daouTree.initTree();
                         });
                     }
                 }
