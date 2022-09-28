@@ -26,4 +26,8 @@ public class DepartmentService {
     public int departmentDelete(String departmentId) {
         return departmentMapper.departmentDelete(departmentId);
     }
+
+    public int departmentDragAndDrop(DepartmentDTO departmentDTO) {
+        return departmentMapper.departmentDragAndDrop(departmentDTO);
+    }
 }

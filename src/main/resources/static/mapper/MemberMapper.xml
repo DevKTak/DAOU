@@ -13,4 +13,27 @@
          WHERE M.del_yn = 'N'
       ORDER BY P.level
     </select>
+
+    <update id="memberUpdate" parameterType="daou.member.dto.MemberDTO">
+        UPDATE Member
+           SET name = #{name}
+
+          <if test="positionId != null and postionId != ''.toString()">
+            AND position_id = #{portionId}
+          </if>
+        WHERE member_id = #{memberId}
+    </update>
+
+    <delete id="memberDelete" parameterType="String">
+        UPDATE Member
+          SET del_yn = 'Y'
+        WHERE department_id = #{departmentId} and member_id = #{memberId}
+    </delete>
+
+    <update id="memberDragAndDrop" parameterType="daou.member.dto.DragAndDropDTO">
+        UPDATE Member
+           SET department_id = #{nextDepartmentId}
+         WHERE department_id = #{departmentId}
+           AND member_id = #{memberId}
+    </update>
 </mapper>

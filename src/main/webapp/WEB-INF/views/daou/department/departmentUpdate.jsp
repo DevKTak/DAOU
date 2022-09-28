@@ -37,7 +37,7 @@
             const param = {
                 departmentId: '${departmentId}',
                 name: $('#name').val(),
-            }
+            };
 
             $.ajax({
                 type: 'PUT',

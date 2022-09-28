@@ -49,7 +49,7 @@
             $.ajax({
                 type: 'GET',
                 dataType: 'json',
-                url: '${pageContext.request.contextPath}/common/tree',
+                url: '${pageContext.request.contextPath}/api/common/tree',
                 success: function (result) {
                     console.log('[%s] initTree - result: ', self.pageId, result);
 

@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/common")
+@RequestMapping("/api/common")
 public class CommonController {
 
     private final CommonService commonService;

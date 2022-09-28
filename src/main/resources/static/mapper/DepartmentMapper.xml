@@ -25,4 +25,10 @@
         DELETE FROM Department
         WHERE department_id = #{departmentId}
     </delete>
+
+    <update id="departmentDragAndDrop" parameterType="daou.department.dto.DepartmentDTO">
+        UPDATE Department
+           SET parent_id = #{parentId}
+         WHERE department_id = #{departmentId}
+    </update>
 </mapper>

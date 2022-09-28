@@ -15,6 +15,7 @@ public interface DepartmentMapper {
     int departmentCreate(Department department);
 
     int departmentUpdate(DepartmentDTO departmentDTO);
-
     int departmentDelete(@Param("departmentId") String departmentId);
+
+    int departmentDragAndDrop(DepartmentDTO departmentDTO);
 }
