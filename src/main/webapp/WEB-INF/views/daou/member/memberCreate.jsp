@@ -114,7 +114,7 @@
                     }).on('loaded.jstree', function () {
                         $daouTreeCreate.jstree('open_all');
 
-                        $('#departmentIdList').val('${departmentId}');
+                        self.departmentIdList = '${departmentId}'
                         self.deptName.push('${deptName}');
                         $('#deptName').val('${deptName}');
                     }).on('changed.jstree', function (event, data) {
@@ -134,7 +134,7 @@
                                 });
                             }
                             $('#deptName').val(self.deptName.join('\n'));
-                            $('#departmentIdList').val(data.selected);
+                            self.departmentIdList = data.selected;
                     });
                 },
                 error: function (request, status, error) {
@@ -156,6 +156,44 @@
                     $.each(result, (i, v) => {
                         $('#position').append('<option value="' + v.positionId + '">' + v.name + '</option>');
                     });
+                },
+                error: function (request, status, error) {
+                    console.error('request: ', request, 'status: ', status, 'error: ', error);
+                }
+            });
+        },
+
+        <%-- 직원 추가 --%>
+        createMember: function () {
+            const self = this;
+
+            const formData = new FormData();
+            formData.append('name', $('#name').val());
+            formData.append('position', $('#position option:selected').val());
+            formData.append('departmentIdList', self.departmentIdList);
+            formData.append('profile', $('#profile')[0].files[0]);
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'text',
+                processData: false, // 데이터 객체를 문자열로 바꿀지 여부
+                contentType: false, // true: 일반 text로 구분되어 짐
+                data: formData,
+                url: '${pageContext.request.contextPath}/api/member',
+                success: function (result) {
+                    console.log('[%s] createMember - result: ', self.pageId, result);
+
+                    w2alert('직원이 추가되었습니다.', '직원 추가').ok(() => {
+                        const obj = {'key': daouTree};
+                        const property = 'key';
+
+                        obj[property].initTree();
+                        w2popup.close();
+                    });
+
+                },
+                error: function (request, status, error) {
+                    console.error('request: ', request, 'status: ', status, 'error: ', error);
                 }
             });
         }

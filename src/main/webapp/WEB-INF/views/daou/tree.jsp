@@ -151,7 +151,7 @@
                                     return -1;
                                 }
                             } else if (aLevel || bLevel) { // 사원과 그룹 비교
-                                return this.get_node(a).icon ? 1 : -1;
+                                return this.get_node(a).original.type === '' ? 1 : -1;
                             } else { //그룹과 그룹 비교
                                 return this.get_node(a).original.sort > this.get_node(b).original.sort ? 1 : -1;
                             }
@@ -231,7 +231,7 @@
                                     }
                                 }
 
-                            return node.icon ? departmentContextMenu : memberContextMenu;
+                            return nodeData.type === '' ? departmentContextMenu : memberContextMenu;
                           }
                         },
                         plugins: ['contextmenu', 'types', 'dnd' , 'sort', 'unique' /*, 'wholerow' */]
@@ -267,7 +267,7 @@
                 },
                 success: function (result) {
                     const buttons = [
-                        '<button class="w2ui-btn w2ui-icon-check" onclick="departmentCreate.createDepartment()">&nbsp;&nbsp;Save</button>',
+                        '<button class="w2ui-btn w2ui-icon-check" onclick="departmentCreate.createDepartment();">&nbsp;&nbsp;Save</button>',
                         '<button class="w2ui-btn w2ui-icon-cross" onclick="w2popup.close();">&nbsp;&nbsp;Close</button>'
                     ];
 
@@ -356,7 +356,7 @@
                 },
                 success: function (result) {
                     const buttons = [
-                        '<button class="w2ui-btn w2ui-icon-check" onclick="$(\'#memberForm\').submit();">&nbsp;&nbsp;Save</button>',
+                        '<button class="w2ui-btn w2ui-icon-check" onclick="memberCreate.createMember();">&nbsp;&nbsp;Save</button>',
                         '<button class="w2ui-btn w2ui-icon-cross" onclick="w2popup.close();">&nbsp;&nbsp;Close</button>'
                     ];
 

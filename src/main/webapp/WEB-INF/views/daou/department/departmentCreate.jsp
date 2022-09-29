@@ -128,7 +128,7 @@
                     console.log('[%s] createDepartment - result: ', self.pageId, result);
 
                     if (result > 0) {
-                        w2alert('부서가 생성되었습니다.', '부서 생성').ok(() => {
+                        w2alert('부서가 추가되었습니다.', '부서 추가').ok(() => {
                             const obj = {'key': daouTree};
                             const property = 'key';
 
