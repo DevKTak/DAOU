@@ -14,7 +14,7 @@
 </head>
 <body>
 <div style="display: flex; width: 100%; height: 100%;">
-    <div style="width: 50%; border: 3px #cfcfcf outset; overflow: auto; margin-top: 5px;">
+    <div style="width: 50%; border: 1px #cfcfcf outset; overflow: auto; margin-top: 5px;">
         <div id="daouTreeCreate"></div>
     </div>
     <div style="width: 50%; overflow: auto;">

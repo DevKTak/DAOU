@@ -6,7 +6,7 @@
         SELECT M.member_id
              , M.department_id
              , concat(M.name, ' ', P.name) name
-             , M.profile_image
+             , M.profile_path
              , P.level
           FROM Member M
     INNER JOIN Position P ON M.position_id = P.position_id
@@ -14,11 +14,16 @@
       ORDER BY P.level
     </select>
 
-    <update id="memberUpdate" parameterType="daou.member.dto.MemberDTO">
+    <insert id="memberCreate" parameterType="daou.member.Member">
+        INSERT INTO Member(member_id, department_id, position_id, name, reg_datetime, upt_datetime, del_yn, profile_path)
+             VALUES (#{memberId}, #{departmentId}, #{positionId}, #{name}, #{regDatetime}, #{uptDatetime}, #{delYn}, #{profilePath})
+    </insert>
+
+    <update id="memberUpdate" parameterType="daou.member.Member">
         UPDATE Member
            SET name = #{name}
 
-          <if test="positionId != null and postionId != ''.toString()">
+          <if test="positionId != null and positionId != ''.toString()">
             AND position_id = #{portionId}
           </if>
         WHERE member_id = #{memberId}

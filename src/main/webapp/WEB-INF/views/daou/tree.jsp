@@ -55,7 +55,9 @@
                             parent: v.department_id,
                             text: v.name,
                             type: 'leaf',
-                            level: v.level
+                            level: v.level,
+                            profilePath: v.profile_path,
+                            icon : '${pageContext.request.contextPath}/profileImage/' + v.profile_path
                         });
                     });
 
@@ -128,7 +130,7 @@
                         },
                         types: {
                             leaf: {
-                                icon : false
+                                // icon : false
                             }
                         },
                         cookie: {
@@ -354,7 +356,7 @@
                 },
                 success: function (result) {
                     const buttons = [
-                        '<button class="w2ui-btn w2ui-icon-check" onclick="memberCreate.createMember()">&nbsp;&nbsp;Save</button>',
+                        '<button class="w2ui-btn w2ui-icon-check" onclick="$(\'#memberForm\').submit();">&nbsp;&nbsp;Save</button>',
                         '<button class="w2ui-btn w2ui-icon-cross" onclick="w2popup.close();">&nbsp;&nbsp;Close</button>'
                     ];
 
@@ -362,7 +364,7 @@
                         title: '직원 추가',
                         body: result,
                         width: 520,
-                        height: 470,
+                        height: 489,
                         modal: true,
                         showClose: false,
                         buttons: buttons.join('')

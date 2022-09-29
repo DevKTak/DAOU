@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -13,6 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @PostMapping()
+    public void memberCreate(@Valid @ModelAttribute MemberDTO memberDTO, HttpServletRequest request) throws IOException {
+        log.debug(memberDTO.toString());
+
+        memberService.memberCreate(memberDTO, request);
+    }
 
     @DeleteMapping("/{departmentId}/{memberId}")
     public int memberDelete(@PathVariable String departmentId, @PathVariable String memberId) {

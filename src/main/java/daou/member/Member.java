@@ -1,6 +1,7 @@
 package daou.member;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -19,13 +20,12 @@ public class Member {
 
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDatetime;
 
     private LocalDateTime uptDatetime;
 
     private char delYn;
 
-    public void generateRegDatetime() {
-        this.regDatetime = LocalDateTime.now();
-    }
+    private String profilePath;
 }

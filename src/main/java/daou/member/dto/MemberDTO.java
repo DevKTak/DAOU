@@ -1,31 +1,26 @@
 package daou.member.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Builder
 @Getter
 @Setter
 @ToString
 public class MemberDTO {
 
-    private String memberId;
-
-    private String departmentId;
-
-    private String positionId;
-
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
 
-    private LocalDateTime regDatetime;
+    private String position;
 
-    private LocalDateTime uptDatetime;
+    private MultipartFile profile;
 
-    private char delYn;
+    @NotNull(message = "부서를 선택해주세요.")
+    private List<String> departmentIdList;
 }

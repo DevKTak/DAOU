@@ -22,7 +22,7 @@ public class Department {
     private int sort;
 
     public void generateDepartmentId() {
-        String parseLocalDateTimeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.departmentId = parseLocalDateTimeNow;
+        String parseLocalDateTimeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        this.departmentId = "G" + parseLocalDateTimeNow;
     }
 }

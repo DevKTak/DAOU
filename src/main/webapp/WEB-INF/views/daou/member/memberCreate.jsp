@@ -16,49 +16,50 @@
     </style>
 </head>
 <body>
-<div style="display: flex; width: 100%; height: 100%;">
-    <div style="width: 50%; border: 3px #cfcfcf outset; overflow: auto; margin-top: 5px;">
+<form id="memberForm" style="display: flex; width: 100%; height: 100%;" action="${pageContext.request.contextPath}/api/member" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="departmentIdList" name="departmentIdList" value="departmentIdList">
+
+    <div style="width: 50%; border: 1px #cfcfcf outset; overflow: auto; margin-top: 5px; height: 96%;">
         <div id="daouTreeCreate"></div>
     </div>
     <div style="width: 50%; overflow: auto;">
         <div class="w2ui-group">
             <div class="w2ui-group-fields">
-                <div class="w2ui-field">
+                <div class="w2ui-field" style="display: flex;">
                     <label for="name">이름</label>
-                    <input type="text" id="name" placeholder="이름을 입력해주세요." required>
-                </div>
-            </div>
-            <div class="w2ui-group-fields">
-                <div class="w2ui-field">
-                    <label for="position">직급</label>
-                    <select id="position"></select>
+                    <input type="text" id="name" name="name" placeholder="이름을 입력해주세요." required>
                 </div>
             </div>
             <div class="w2ui-group-fields">
                 <div class="w2ui-field" style="display: flex;">
-                    <label for="profile">이미지</label>
-                    <input type="file" id="profile" required>
+                    <label for="position">직급</label>
+                    <select id="position" name="position"></select>
+                </div>
+            </div>
+            <div class="w2ui-group-fields">
+                <div class="w2ui-field" style="display: flex; align-items: center;">
+                    <label for="profile" style="width: 74px;">이미지</label>
+                    <input type="file" id="profile" name="profile" class="w2ui-btn" required>
                 </div>
             </div>
             <div class="w2ui-group-fields">
                 <div class="w2ui-field">
                     <label for="deptName">부서명</label>
-                    <textarea id="deptName" disabled style="width: 147px; height: 139px;" required></textarea>
+                    <textarea id="deptName" name="deptName" disabled style="width: 147px; height: 139px; resize: none;" required></textarea>
                     <div style="margin-left: 0; font-weight: bold; padding-top: 7px; text-align: center;">
-                        <span style="color: red;">*</span> 부서 중복 선택 가능
+                        <span style="color: red;">*</span>부서 중복 선택 가능
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 <script>
     var memberCreate = {
 
         pageId: 'memberCreate',
 
-        departmentId: [],
         deptName: [],
 
         initTree: function () {
@@ -113,19 +114,19 @@
                     }).on('loaded.jstree', function () {
                         $daouTreeCreate.jstree('open_all');
 
-                        self.departmentId.push('${departmentId}');
+                        $('#departmentIdList').val('${departmentId}');
                         self.deptName.push('${deptName}');
                         $('#deptName').val('${deptName}');
                     }).on('changed.jstree', function (event, data) {
+                        console.log(data)
                         const selectedNodeLen = ( $daouTreeCreate.jstree("get_selected") ).length;
                         let nodeData = data.node.original;
 
                             if (data.action === 'select_node') {
                                 if (selectedNodeLen <= 1) {
-                                    self.departmentId.length = 0;
                                     self.deptName.length = 0;
                                 }
-                                self.departmentId.push(nodeData.departmentId);
+                                // self.departmentId.push(nodeData.departmentId);
                                 self.deptName.push(nodeData.text);
                             } else { // deselect_node
                                 self.deptName = self.deptName.filter(v => {
@@ -133,6 +134,7 @@
                                 });
                             }
                             $('#deptName').val(self.deptName.join('\n'));
+                            $('#departmentIdList').val(data.selected);
                     });
                 },
                 error: function (request, status, error) {
@@ -140,9 +142,27 @@
                 }
             });
         },
+
+        initPosition: function () {
+            const self = this;
+
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: '${pageContext.request.contextPath}/api/position',
+                success: function (result) {
+                    console.log('[%s] initPosition - result: ', self.pageId, result);
+
+                    $.each(result, (i, v) => {
+                        $('#position').append('<option value="' + v.positionId + '">' + v.name + '</option>');
+                    });
+                }
+            });
+        }
     };
 
     $(function () {
+        memberCreate.initPosition();
         memberCreate.initTree();
     });
 </script>

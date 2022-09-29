@@ -7,7 +7,7 @@
              , parent_id
              , name
              , sort
-        FROM Department;
+        FROM Department
     </select>
 
     <insert id="departmentCreate" parameterType="daou.department.Department">
