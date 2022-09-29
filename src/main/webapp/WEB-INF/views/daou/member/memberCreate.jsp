@@ -35,10 +35,16 @@
                 </div>
             </div>
             <div class="w2ui-group-fields">
+                <div class="w2ui-field" style="display: flex;">
+                    <label for="profile">이미지</label>
+                    <input type="file" id="profile" required>
+                </div>
+            </div>
+            <div class="w2ui-group-fields">
                 <div class="w2ui-field">
                     <label for="deptName">부서명</label>
-                    <input type="text" id="deptName" disabled>
-                    <div style="margin-left: 0; font-weight: bold; padding-top: 7px;">
+                    <textarea id="deptName" disabled style="width: 147px; height: 139px;" required></textarea>
+                    <div style="margin-left: 0; font-weight: bold; padding-top: 7px; text-align: center;">
                         <span style="color: red;">*</span> 부서 중복 선택 가능
                     </div>
                 </div>
@@ -51,6 +57,9 @@
     var memberCreate = {
 
         pageId: 'memberCreate',
+
+        departmentId: [],
+        deptName: [],
 
         initTree: function () {
             const self = this;
@@ -104,11 +113,26 @@
                     }).on('loaded.jstree', function () {
                         $daouTreeCreate.jstree('open_all');
 
-                        self.parentId =  '${departmentId}';
+                        self.departmentId.push('${departmentId}');
+                        self.deptName.push('${deptName}');
+                        $('#deptName').val('${deptName}');
                     }).on('changed.jstree', function (event, data) {
-                        const node = data.node;
-                        $('#parentDeptName').val(node.text);
-                        self.parentId = node.departmentId;
+                        const selectedNodeLen = ( $daouTreeCreate.jstree("get_selected") ).length;
+                        let nodeData = data.node.original;
+
+                            if (data.action === 'select_node') {
+                                if (selectedNodeLen <= 1) {
+                                    self.departmentId.length = 0;
+                                    self.deptName.length = 0;
+                                }
+                                self.departmentId.push(nodeData.departmentId);
+                                self.deptName.push(nodeData.text);
+                            } else { // deselect_node
+                                self.deptName = self.deptName.filter(v => {
+                                    return v !== nodeData.text;
+                                });
+                            }
+                            $('#deptName').val(self.deptName.join('\n'));
                     });
                 },
                 error: function (request, status, error) {

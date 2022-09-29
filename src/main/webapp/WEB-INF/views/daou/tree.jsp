@@ -361,8 +361,8 @@
                     w2popup.open({
                         title: '직원 추가',
                         body: result,
-                        width: 500,
-                        height: 400,
+                        width: 520,
+                        height: 470,
                         modal: true,
                         showClose: false,
                         buttons: buttons.join('')
