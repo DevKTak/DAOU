@@ -61,10 +61,6 @@
             });
         }
     };
-
-    $(function () {
-
-    });
 </script>
 </body>
 </html>

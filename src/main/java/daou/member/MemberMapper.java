@@ -12,6 +12,8 @@ public interface MemberMapper {
 
     void memberCreate(Member member);
 
+    int memberUpdate(Member member);
+
     List<Map<String, Object>> findMemberAndPosition();
 
     int memberDelete(@Param("departmentId") String departmentId, @Param("memberId") String memberId);

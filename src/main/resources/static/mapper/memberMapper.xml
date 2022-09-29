@@ -5,8 +5,10 @@
     <select id="findMemberAndPosition" resultType="map">
         SELECT M.member_id
              , M.department_id
-             , concat(M.name, ' ', P.name) name
+             , M.name as member_name
+             , P.name as position_name
              , M.profile_path
+             , P.position_id
              , P.level
           FROM Member M
     INNER JOIN Position P ON M.position_id = P.position_id
@@ -22,11 +24,9 @@
     <update id="memberUpdate" parameterType="daou.member.Member">
         UPDATE Member
            SET name = #{name}
-
-          <if test="positionId != null and positionId != ''.toString()">
-            AND position_id = #{portionId}
-          </if>
-        WHERE member_id = #{memberId}
+             , position_id = #{positionId}
+             , profile_path = #{profilePath}
+         WHERE member_id = #{memberId}
     </update>
 
     <delete id="memberDelete" parameterType="String">

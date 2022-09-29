@@ -16,9 +16,7 @@
     </style>
 </head>
 <body>
-<form id="memberForm" style="display: flex; width: 100%; height: 100%;" action="${pageContext.request.contextPath}/api/member" method="POST" enctype="multipart/form-data">
-    <input type="hidden" id="departmentIdList" name="departmentIdList" value="departmentIdList">
-
+<div style="display: flex; width: 100%; height: 100%;">
     <div style="width: 50%; border: 1px #cfcfcf outset; overflow: auto; margin-top: 5px; height: 96%;">
         <div id="daouTreeCreate"></div>
     </div>
@@ -53,7 +51,7 @@
             </div>
         </div>
     </div>
-</form>
+</div>
 
 <script>
     var memberCreate = {

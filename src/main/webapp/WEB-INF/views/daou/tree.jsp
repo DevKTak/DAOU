@@ -4,19 +4,13 @@
 <head>
     <title>DAOU</title>
 
-<%--    <%@ include file="/WEB-INF/views/include/style.jsp "%>--%>
-<%--    <%@ include file="/WEB-INF/views/include/header.jsp "%>--%>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.5.min.css" />
+    <%@ include file="/WEB-INF/views/include/style.jsp" %>
+    <%@ include file="/WEB-INF/views/include/header.jsp" %>
 </head>
 <body>
 <div style="text-align: center; width: 300px; border: solid 1px #e7e7e7; padding: 5px; font-weight: bold; margin-bottom: 15px;">조직도</div>
 <div id="daouTree"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/w2ui-1.5.min.js"></script>
 <script>
     const daouTree = {
 
@@ -52,10 +46,13 @@
                             id: i, // member_id는 슈퍼키라 중복이 있을수 있기 때문에 jstree에서는 id값으로 사용 x
                             memberId: v.member_id,
                             departmentId: v.department_id,
+                            memberName: v.member_name,
+                            positionName: v.position_name,
                             parent: v.department_id,
-                            text: v.name,
+                            text: v.member_name + ' ' + v.position_name,
                             type: 'leaf',
                             level: v.level,
+                            positionId: v.position_id,
                             profilePath: v.profile_path,
                             icon : '${pageContext.request.contextPath}/profileImage/' + v.profile_path
                         });
@@ -129,8 +126,8 @@
                             }
                         },
                         types: {
-                            leaf: {
-                                // icon : false
+                            default: {
+                                icon : '${pageContext.request.contextPath}/icon/daou3.png'
                             }
                         },
                         cookie: {
@@ -215,6 +212,8 @@
                                         label: '직원 수정',
                                         action: (obj) => {
                                             console.log('[%s] initTree - contextmenu.items.memberUpdate.obj: ', self.pageId, obj);
+
+                                            self.memberUpdateForm(nodeData);
                                         }
                                     },
                                     memberDelete: {
@@ -234,7 +233,7 @@
                             return nodeData.type === '' ? departmentContextMenu : memberContextMenu;
                           }
                         },
-                        plugins: ['contextmenu', 'types', 'dnd' , 'sort', 'unique' /*, 'wholerow' */]
+                        plugins: ['contextmenu', 'types', 'dnd' , 'sort', 'unique'/*, 'wholerow'*/]
                     }).on('loaded.jstree', function () {
                         $daouTree.jstree('open_all');
                     }).on('changed.jstree', function (event, data) {
@@ -373,9 +372,41 @@
             });
         },
 
-        <%-- 직원 수정 --%>
-        updateMemberForm: function (nodeData) {
+        <%-- 직원 수정 팝업 --%>
+        memberUpdateForm: function (nodeData) {
+            const $body = $('body');
 
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                data: 'memberId=' + encodeURIComponent(nodeData.memberId)
+                    + '&name=' + encodeURIComponent(nodeData.memberName)
+                    + '&position=' + encodeURIComponent(nodeData.positionId)
+                    + '&profilePath=' + encodeURIComponent(nodeData.profilePath),
+                url: '${pageContext.request.contextPath}/member/updateForm',
+                beforeSend: function () {
+                    w2utils.lock($body, {spinner: true, msg: '화면 로딩중...', opacity: 0.5});
+                },
+                complete: function () {
+                    w2utils.unlock($body);
+                },
+                success: function (result) {
+                    const buttons = [
+                        '<button class="w2ui-btn w2ui-icon-check" onclick="memberUpdate.updateMember()">&nbsp;&nbsp;Save</button>',
+                        '<button class="w2ui-btn w2ui-icon-cross" onclick="w2popup.close();">&nbsp;&nbsp;Close</button>'
+                    ];
+
+                    w2popup.open({
+                        title: '직원 수정',
+                        body: result,
+                        width: 290,
+                        height: 441,
+                        modal: true,
+                        showClose: false,
+                        buttons: buttons.join('')
+                    });
+                }
+            });
         },
 
         <%-- 직원 삭제 --%>
@@ -400,6 +431,11 @@
 
     $(function () {
         daouTree.initTree();
+
+        $('i[role="presentation"]').css('color', 'red');
+        $('.jstree-icon').css('color', 'red');
+        $('.jstree-icon:empty').css('color', 'red');
+        $('.jstree-default .jstree-icon:empty').css('color', 'red');
     });
 </script>
 </body>

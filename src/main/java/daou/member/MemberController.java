@@ -25,6 +25,13 @@ public class MemberController {
         memberService.memberCreate(memberDTO, request);
     }
 
+    @PutMapping()
+    public int memberUpdate(@Valid @ModelAttribute MemberDTO memberDTO, HttpServletRequest request) throws IOException {
+        log.debug(memberDTO.toString());
+
+        return memberService.memberUpdate(memberDTO, request);
+    }
+
     @DeleteMapping("/{departmentId}/{memberId}")
     public int memberDelete(@PathVariable String departmentId, @PathVariable String memberId) {
         return memberService.memberDelete(departmentId, memberId);
