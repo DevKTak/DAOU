@@ -33,6 +33,14 @@
         <%-- 부서 수정 --%>
         updateDepartment: function () {
             const self = this;
+            const $name = $('#name');
+
+            if (!$name.val()) {
+                w2alert('부서명을 입력해주세요.').ok(() => {
+                    $name.focus();
+                });
+                return;
+            }
 
             const param = {
                 departmentId: '${departmentId}',

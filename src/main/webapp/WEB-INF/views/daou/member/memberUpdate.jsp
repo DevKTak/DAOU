@@ -62,6 +62,14 @@
         <%-- 직원 수정 --%>
         updateMember: function () {
             const self = this;
+            const $name = $('#name');
+
+            if (!$name.val()) {
+                w2alert('이름을 입력해주세요.').ok(() => {
+                    $name.focus();
+                });
+                return;
+            }
 
             const formData = new FormData();
             formData.append('memberId', '${param.memberId}');

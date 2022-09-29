@@ -164,12 +164,34 @@
         <%-- 직원 추가 --%>
         createMember: function () {
             const self = this;
+            const $name = $('#name');
+            const $deptName = $('#deptName');
+            const file = $('#profile')[0].files[0];
+
+            if (!$name.val()) {
+                w2alert('이름을 입력해주세요.').ok(() => {
+                    $name.focus();
+                });
+                return;
+            }
+            if (!$deptName.val()) {
+                w2alert('부서를 선택해주세요.').ok(() => {
+                    $deptName.focus();
+                });
+                return;
+            }
+            if (!file) {
+                w2alert('파일을 선택해주세요.').ok(() => {
+                    $('#profile').focus();
+                });
+                return;
+            }
 
             const formData = new FormData();
-            formData.append('name', $('#name').val());
+            formData.append('name', $name.val());
             formData.append('position', $('#position option:selected').val());
             formData.append('departmentIdList', self.departmentIdList);
-            formData.append('profile', $('#profile')[0].files[0]);
+            formData.append('profile', file);
 
             $.ajax({
                 type: 'POST',

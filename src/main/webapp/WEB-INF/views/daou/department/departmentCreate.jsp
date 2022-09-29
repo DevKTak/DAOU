@@ -111,10 +111,18 @@
         <%-- 부서 추가 --%>
         createDepartment: function () {
             const self = this;
+            const $name = $('#name');
+
+            if (!$name.val()) {
+                w2alert('부서명을 입력해주세요.').ok(() => {
+                    $name.focus();
+                });
+                return;
+            }
 
             const param = {
                 parentId: self.parentId,
-                name: $('#name').val(),
+                name: $name.val(),
                 sort: self.sort
             }
 
