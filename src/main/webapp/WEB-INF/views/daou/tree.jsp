@@ -150,7 +150,13 @@
                             } else if (aLevel || bLevel) { // 사원과 그룹 비교
                                 return this.get_node(a).original.type === '' ? 1 : -1;
                             } else { //그룹과 그룹 비교
-                                return this.get_node(a).original.sort > this.get_node(b).original.sort ? 1 : -1;
+                                if (this.get_node(a).original.sort > this.get_node(b).original.sort) {
+                                    return 1;
+                                } else if (this.get_node(a).original.sort === this.get_node(b).original.sort) {
+                                    return aText > bText ? 1 : -1;
+                                } else {
+                                    return -1;
+                                }
                             }
                         },
                         contextmenu: {
