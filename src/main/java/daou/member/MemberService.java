@@ -31,8 +31,6 @@ public class MemberService {
     private  LocalDateTime now;
     private String saveFileName;
 
-
-
     public void memberCreate(MemberDTO memberDTO, HttpServletRequest request) throws IOException {
         MultipartFile profile = memberDTO.getProfile();
 
@@ -53,23 +51,6 @@ public class MemberService {
 
                 memberMapper.memberCreate(member);
             }
-
-//            memberDTO.getDepartmentIdList().stream().forEach((departmentId) -> {
-//                Member member = Member.builder()
-//                        .memberId(memberId)
-//                        .departmentId(departmentId)
-//                        .positionId(memberDTO.getPosition())
-//                        .name(memberDTO.getName())
-//                        .regDatetime(now)
-//                        .uptDatetime(now)
-//                        .delYn('N')
-//                        .profilePath(saveFileName)
-//                        .build();
-
-//                memberMapper.memberCreate(member);
-//            });
-
-
         }
     }
 
