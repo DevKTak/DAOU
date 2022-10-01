@@ -15,12 +15,12 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @PostMapping()
+    @PostMapping
     public int departmentCreate(@Valid @RequestBody DepartmentDTO departmentDTO) {
         return departmentService.departmentCreate(departmentDTO);
     }
 
-    @PutMapping()
+    @PutMapping
     public int departmentUpdate(@Valid @RequestBody DepartmentDTO departmentDTO) {
         return departmentService.departmentUpdate(departmentDTO);
     }
