@@ -437,6 +437,11 @@
 
     $(function () {
         daouTree.initTree();
+
+        $('i[role="presentation"]').css('color', 'red');
+        $('.jstree-icon').css('color', 'red');
+        $('.jstree-icon:empty').css('color', 'red');
+        $('.jstree-default .jstree-icon:empty').css('color', 'red');
     });
 </script>
 </body>
