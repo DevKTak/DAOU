@@ -25,6 +25,8 @@ public class MemberRouter {
 
     @GetMapping("/updateForm")
     public String memberUpdateForm(@ModelAttribute MemberDTO memberDTO) {
+        log.debug(memberDTO.toString());
+
         return "daou/member/memberUpdate";
     }
 }

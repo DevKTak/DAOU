@@ -20,11 +20,15 @@ public class MemberController {
 
     @PostMapping()
     public void memberCreate(@Valid @ModelAttribute MemberDTO memberDTO, HttpServletRequest request) throws IOException {
+        log.debug(memberDTO.toString());
+
         memberService.memberCreate(memberDTO, request);
     }
 
     @PutMapping()
     public int memberUpdate(@Valid @ModelAttribute MemberDTO memberDTO, HttpServletRequest request) throws IOException {
+        log.debug(memberDTO.toString());
+
         return memberService.memberUpdate(memberDTO, request);
     }
 
