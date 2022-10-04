@@ -62,8 +62,6 @@ public class MemberService {
         memberId = getGenerateMemberId(now);
 
         String projectInnerSavePath = request.getServletContext().getRealPath("/profileImage");
-        log.debug(projectInnerSavePath);
-
         saveFileName = memberId + "_" + memberDTO.getName() + extension;
         String fullPath = projectInnerSavePath + "/" + saveFileName;
 //          String fullPath = path + saveFileName; // 프로젝트 내부 경로에 저장하는 로직을 위해 잠시 주석
