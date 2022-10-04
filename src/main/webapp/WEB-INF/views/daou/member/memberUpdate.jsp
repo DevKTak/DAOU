@@ -42,7 +42,7 @@
         <div class="w2ui-field" style="display: flex;">
             <label for="cur_profile">이미지</label>
             <div id="cur_profile" class="profileImage-box" style="margin-left: 0;">
-                <img src="/profileImage/${param.profilePath}" class="profileImage" alt="프로필 이미지">
+                <img src="${pageContext.request.contextPath}/profileImage/${param.profilePath}" class="profileImage" alt="프로필 이미지">
             </div>
         </div>
     </div>
