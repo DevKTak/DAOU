@@ -405,8 +405,8 @@
                     w2popup.open({
                         title: '직원 수정',
                         body: result,
-                        width: 290,
-                        height: 441,
+                        width: 315,
+                        height: 443,
                         modal: true,
                         showClose: false,
                         buttons: buttons.join('')
